@@ -30,7 +30,7 @@ function [C, I, r] = regular_3D_polygon_incircle(P, nb_samples, option_display)
 % Input arguments
 %
 %       [ | |  |]
-% - P = [Py Py Pz] : real matrix double. 2 <= size(A,2) <= 3. P vertex coordinates. 
+% - P = [Py Py Pz] : real matrix double. size(P,1) > 2. 2 <= size(P,2) <= 3. P vertex coordinates. 
 %       [ | |  |]
 %
 % - nb_samples : integer scalar double. The number of samples to draw the
@@ -78,7 +78,7 @@ function [C, I, r] = regular_3D_polygon_incircle(P, nb_samples, option_display)
 
 %% Input parsing
 assert(nargin > 0, 'Not enought input arguments.');
-assert(nargin < 6, 'Too many input arguments.');
+assert(nargin < 4, 'Too many input arguments.');
 
 if nargin < 3
     
@@ -94,7 +94,10 @@ end
 
 
 dimension = size(P,2);
+nb_vtx = size(P,1);
+
 assert(dimension > 1 && dimension < 4,'Input point set must be of dimension 2 or 3.');
+assert(nb_vtx > 2,'Input polygon must have 3 summits at least.');
 
 
 %% Body

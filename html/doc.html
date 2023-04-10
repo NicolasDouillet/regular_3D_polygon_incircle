@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
   </style></head><body><div class="content"><h1>regular_3D_polygon_incircle</h1><!--introduction--><p>Function to compute and display the incircle of a regular polygon in 3D space.</p><p>Author &amp; support : nicolas.douillet (at) free.fr, 2023.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">See also</a></li><li><a href="#4">Input arguments</a></li><li><a href="#5">Output arguments</a></li><li><a href="#6">Example #1</a></li><li><a href="#7">Example #2</a></li></ul></div><h2 id="1">Syntax</h2><p>regular_3D_polygon_incircle(P);</p><p>regular_3D_polygon_incircle(P, nb_samples);</p><p>regular_3D_polygon_incircle(P, nb_samples, option_display);</p><p>[C, I, r] = regular_3D_polygon_incircle(P, nb_samples, option_display);</p><h2 id="2">Description</h2><p>regular_3D_polygon_incircle(P) computes and displays the incircle of polygon P.</p><p>regular_3D_polygon_incircle(P, nb_samples) uses nb_samples to draw the circle.</p><p>regular_3D_polygon_incircle(P, nb_samples, option_display) displays the circle when option_display is set either to logical true or real numeric 1, and doesn't when it is set to logical false or real numeric 0.</p><p>[C, I, r] = regular_3D_polygon_incircle(P, nb_samples, option_display) stores the results in [C, I, r] vector.</p><h2 id="3">See also</h2><p>| <a href="https://fr.mathworks.com/matlabcentral/fileexchange/119778-triangle-incircle-3d-2d?s_tid=prof_contriblnk">triangle incircle</a> |</p><h2 id="4">Input arguments</h2><pre>      [ |  |  | ]
-- P = [Py Py Pz] : real matrix double. 2 &lt;= size(A,2) &lt;= 3. P vertex coordinates.
+- P = [Py Py Pz] : real matrix double. size(P,1) &gt; 2. 2 &lt;= size(P,2) &lt;= 3. P vertex coordinates.
       [ |  |  | ]</pre><p>- nb_samples : integer scalar double. The number of samples to draw the                incircle. nb_samples &gt;= 3.</p><p>- option_display : logical *true(1) / false(0), to enable/disable the display mode.</p><h2 id="5">Output arguments</h2><pre>      [- Cx -]
 - C = [- Cy -]: real matrix double. The incircle coordinates. size(R) = [size(A,1), nb_samples].
       [- Cz -]</pre><pre>      [Ix]
@@ -133,7 +133,7 @@ regular_3D_polygon_incircle(P, nb_samples, option_display);
 %% Input arguments
 %
 %        [ |  |  | ]
-% - P = [Py Py Pz] : real matrix double. 2 <= size(A,2) <= 3. P vertex coordinates. 
+% - P = [Py Py Pz] : real matrix double. size(P,1) > 2. 2 <= size(P,2) <= 3. P vertex coordinates. 
 %        [ |  |  | ]
 %
 % - nb_samples : integer scalar double. The number of samples to draw the

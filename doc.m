@@ -40,7 +40,7 @@
 %% Input arguments
 %
 %        [ |  |  | ]
-% - P = [Py Py Pz] : real matrix double. 2 <= size(A,2) <= 3. P vertex coordinates. 
+% - P = [Py Py Pz] : real matrix double. size(P,1) > 2. 2 <= size(P,2) <= 3. P vertex coordinates. 
 %        [ |  |  | ]
 %
 % - nb_samples : integer scalar double. The number of samples to draw the
