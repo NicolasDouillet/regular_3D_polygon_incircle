@@ -30,7 +30,7 @@ function [C, I, r] = regular_3D_polygon_incircle(P, nb_samples, option_display)
 % Input arguments
 %
 %       [ | |  |]
-% - P = [Py Py Pz] : real matrix double. size(P,1) > 2. 2 <= size(P,2) <= 3. P vertex coordinates. 
+% - P = [Px Py Pz] : real matrix double. size(P,1) > 2. 2 <= size(P,2) <= 3. P vertex coordinates. 
 %       [ | |  |]
 %
 % - nb_samples : integer scalar double. The number of samples to draw the
@@ -93,21 +93,16 @@ if nargin < 3
 end
 
 
-dimension = size(P,2);
+
 nb_vtx = size(P,1);
 
-assert(dimension > 1 && dimension < 4,'Input point set must be of dimension 2 or 3.');
+assert(size(P,2) > 1 && size(P,2) < 4,'Input point set must be of dimension 2 or 3.');
 assert(nb_vtx > 2,'Input polygon must have 3 summits at least.');
 
 
 %% Body
 N = size(P,1); % number of vertices / edges of the polygon
 
-if dimension < 3 % one padding in 2D case    
-    
-    P = cat(2,P,ones(size(P,1),1));    
-    
-end
 
 % Polygon centre
 I = mean(P,1);
@@ -127,38 +122,30 @@ Cz = zeros(1,numel(theta));
 
 
 % Rotate circle
-if dimension > 2
+% One normal vector to the polygon plane
+% ABC triangle director and normal vectors computation
+n = cross(P(2,:)-P(1,:),P(3,:)-P(1,:));
+
+% Vector u to rotate around
+k = [0 0 1]';
+
+if norm(cross(k,n)) > 1e3*eps
     
-    
-    % One normal vector to the polygon plane
-    % ABC triangle director and normal vectors computation     
-    n = cross(P(2,:)-P(1,:),P(3,:)-P(1,:));
-    
-    % Vector u to rotate around
-    k = [0 0 1]';
     u = cross(k,n)/norm(cross(k,n));
     
     % Angle between k and u
-    alpha = atan2(norm(cross(k,n)),dot(k,n));    
+    alpha = atan2(norm(cross(k,n)),dot(k,n));
     
     % 3D rotation matrix around u vector
     Rm = @(delta)[u(1)^2+cos(delta)*(1-u(1)^2) (1-cos(delta))*u(1)*u(2)-u(3)*sin(delta) (1-cos(delta))*u(1)*u(3)+u(2)*sin(delta);
                   (1-cos(delta))*u(1)*u(2)+u(3)*sin(delta) u(2)^2+cos(delta)*(1-u(2)^2) (1-cos(delta))*u(2)*u(3)-u(1)*sin(delta);
                   (1-cos(delta))*u(1)*u(3)-u(2)*sin(delta) (1-cos(delta))*u(2)*u(3)+u(1)*sin(delta) u(3)^2+cos(delta)*(1-u(3)^2)];
-                  
+    
     C = (Rm(alpha) * cat(1,Cx,Cy,Cz))' + I;
     
-else % if dimension == 2
-    
-    size(cat(1,Cx,Cy,Cz)')
-    size(I)
-    
+else
     
     C = cat(1,Cx,Cy,Cz)' + I;
-    
-    % one simplifications in 2D case
-    C = C(:,1:2); 
-    I = I(1:2);
     
 end
 
@@ -166,23 +153,13 @@ end
 %% Display
 if option_display
     
-    figure    
-        
-    if dimension > 2
-        
-        line([P(:,1); P(1,1)],[P(:,2); P(1,2)],[P(:,3); P(1,3)],'Color',[1 0 0],'Linewidth',2), hold on;
-        line(C(:,1),C(:,2),C(:,3),'Color',[0 0 1],'Linewidth',2), hold on;    
-        view(3);
+    figure
     
-    else % if dimension == 2
-        
-        line([P(:,1); P(1,1)],[P(:,2); P(1,2)],'Color',[1 0 0],'Linewidth',2), hold on;
-        line(C(:,1),C(:,2),'Color',[0 0 1],'Linewidth',2), hold on; 
-        view(2);
-        
-    end
+    line([P(:,1); P(1,1)],[P(:,2); P(1,2)],[P(:,3); P(1,3)],'Color',[1 0 0],'Linewidth',2), hold on;
+    line(C(:,1),C(:,2),C(:,3),'Color',[0 0 1],'Linewidth',2), hold on;
+    view(3);
     
-    axis equal, axis tight;    
+    axis equal, axis tight;
     
 end
 
